@@ -1,6 +1,7 @@
 import './App.css';
 import React from 'react';
 import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router";
 import Axios from "axios";
 
 function App() {
@@ -11,13 +12,14 @@ function App() {
   const [listofblogs, setListOfBlogs] = useState([]);
   const [status, setStatus] = useState("all");
   
+  const params = useParams();
   const create = () => {
     setStatus("add");
   }
 
   const addBlog = () => {
     if (title !== "" && content !== "" && description !== "") {
-      Axios.post("http://localhost:3001/addBlog", {
+      Axios.post("https://harsha-blogs.herokuapp.com/addBlog", {
         title: title,
         description: description,
         content : content  
@@ -52,46 +54,38 @@ function App() {
   };
 
   const del = (id) => {
-    Axios.delete(`http://localhost:3001/delete/${id}`).then(() => {
+    Axios.delete(`https://harsha-blogs.herokuapp.com/delete/${id}`).then(() => {
       setListOfBlogs(listofblogs.filter((val) => {
         return val._id !== id;
       }))
     });
     
-  };
+  };  
 
+  // rewrite 
   const upd = () => {
-    Axios.post("http://localhost:3001/addBlog", {
+
+    console.log(id);
+    console.log(title);
+    console.log(description);
+    console.log(content);
+    
+    Axios.delete(`https://harsha-blogs.herokuapp.com/delete/${id}`);
+    Axios.put(`https://harsha-blogs.herokuapp.com/put`, {
+      id: id,
       title: title,
       description: description,
       content : content  
-    }).then((response) => {
-      // setListOfBlogs([
-      //   ...listofblogs,
-      //   { _id: response.data._id, title : title, description : description, content : content },
-      // ]);
-      setListOfBlogs((oldList) => {
-        let temp = oldList.map((val) => {
-          if (val._id !== id) {
-            return val;
-          }
-          else {
-            return {_id: response.data._id, title : title, description : description, content : content }
-          }
-        })
-        return temp
-      }) 
-    });   
-    Axios.delete(`http://localhost:3001/delete/${id}`);
-      //correct id -> id
-    // for (let val of listofblogs) {
-    //   if (val._id === id) {
-    //     val.content = content;
-    //     val.description = description;
-    //     val.title = title;
-        
-    //   }
-    // }
+    }).then((res) => {
+      console.log(res);
+      Axios.get("https://harsha-blogs.herokuapp.com/read").then((response) => {
+        setListOfBlogs(response.data);
+      }).catch(() => {
+        console.log("doesn't work");
+      });
+    }).catch((err) =>{
+      console.log(err);
+    });
     setStatus("all");
   };
 
@@ -99,7 +93,7 @@ function App() {
 
   useEffect(() => {
     console.log("fetching data");
-    Axios.get("http://localhost:3001/read").then((response) => {
+    Axios.get("https://harsha-blogs.herokuapp.com/read").then((response) => {
       setListOfBlogs(response.data);
     }).catch(() => {
       console.log("doesn't work");
