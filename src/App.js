@@ -64,29 +64,32 @@ function App() {
 
   // rewrite 
   const upd = () => {
-
-    console.log(id);
-    console.log(title);
-    console.log(description);
-    console.log(content);
-    
-    Axios.delete(`https://harsha-blogs.herokuapp.com/delete/${id}`);
-    Axios.put(`https://harsha-blogs.herokuapp.com/put`, {
-      id: id,
-      title: title,
-      description: description,
-      content : content  
-    }).then((res) => {
-      console.log(res);
-      Axios.get("https://harsha-blogs.herokuapp.com/read").then((response) => {
-        setListOfBlogs(response.data);
-      }).catch(() => {
-        console.log("doesn't work");
+    if (title !== "" && content !== "" && description !== "") {
+      console.log(id);
+      console.log(title);
+      console.log(description);
+      console.log(content);
+      Axios.delete(`https://harsha-blogs.herokuapp.com/delete/${id}`);
+      Axios.put(`https://harsha-blogs.herokuapp.com/put`, {
+        id: id,
+        title: title,
+        description: description,
+        content : content  
+      }).then((res) => {
+        console.log(res);
+        Axios.get("https://harsha-blogs.herokuapp.com/read").then((response) => {
+          setListOfBlogs(response.data);
+        }).catch(() => {
+          console.log("doesn't work");
+        });
+      }).catch((err) =>{
+        console.log(err);
       });
-    }).catch((err) =>{
-      console.log(err);
-    });
-    setStatus("all");
+      setStatus("all");
+    }
+    else {
+      alert("kindly fill all the fields");
+    }  
   };
 
    
