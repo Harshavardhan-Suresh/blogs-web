@@ -11,7 +11,7 @@ function App() {
   const [id, setId] = useState("");
   const [listofblogs, setListOfBlogs] = useState([]);
   const [status, setStatus] = useState("all");
-  const [link, setLink] = useState("https://final-blogs-harsha.herokuapp.com/");
+  const [link, setLink] = useState("https://final-blogs-harsha.herokuapp.com");
   const params = useParams();
   const create = () => {
     setStatus("add");
