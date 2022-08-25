@@ -35,7 +35,7 @@ function App() {
       alert("kindly fill all the fields");
     }
   };
-
+  
   
   const all = () => {
     setStatus("all");   
@@ -62,7 +62,6 @@ function App() {
     
   };  
 
-  // rewrite 
   const upd = () => {
 
     console.log(id);
