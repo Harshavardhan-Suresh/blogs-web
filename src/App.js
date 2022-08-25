@@ -19,7 +19,7 @@ function App() {
 
   const addBlog = () => {
     if (title !== "" && content !== "" && description !== "") {
-      Axios.post("https://harsha-blogs.herokuapp.com/addBlog", {
+      Axios.post("https://final-blogs-harsha.herokuapp.com/addBlog", {
         title: title,
         description: description,
         content : content  
@@ -54,7 +54,7 @@ function App() {
   };
 
   const del = (id) => {
-    Axios.delete(`https://harsha-blogs.herokuapp.com/delete/${id}`).then(() => {
+    Axios.delete(`https://final-blogs-harsha.herokuapp.com/delete/${id}`).then(() => {
       setListOfBlogs(listofblogs.filter((val) => {
         return val._id !== id;
       }))
@@ -64,39 +64,36 @@ function App() {
 
   // rewrite 
   const upd = () => {
-    if (title !== "" && content !== "" && description !== "") {
-      console.log(id);
-      console.log(title);
-      console.log(description);
-      console.log(content);
-      Axios.delete(`https://harsha-blogs.herokuapp.com/delete/${id}`);
-      Axios.put(`https://harsha-blogs.herokuapp.com/put`, {
-        id: id,
-        title: title,
-        description: description,
-        content : content  
-      }).then((res) => {
-        console.log(res);
-        Axios.get("https://harsha-blogs.herokuapp.com/read").then((response) => {
-          setListOfBlogs(response.data);
-        }).catch(() => {
-          console.log("doesn't work");
-        });
-      }).catch((err) =>{
-        console.log(err);
+
+    console.log(id);
+    console.log(title);
+    console.log(description);
+    console.log(content);
+    
+    Axios.delete(`https://final-blogs-harsha.herokuapp.com/delete/${id}`);
+    Axios.put(`https://final-blogs-harsha.herokuapp.com/put`, {
+      id: id,
+      title: title,
+      description: description,
+      content : content  
+    }).then((res) => {
+      console.log(res);
+      Axios.get("https://final-blogs-harsha.herokuapp.com/read").then((response) => {
+        setListOfBlogs(response.data);
+      }).catch(() => {
+        console.log("doesn't work");
       });
-      setStatus("all");
-    }
-    else {
-      alert("kindly fill all the fields");
-    }  
+    }).catch((err) =>{
+      console.log(err);
+    });
+    setStatus("all");
   };
 
    
 
   useEffect(() => {
     console.log("fetching data");
-    Axios.get("https://harsha-blogs.herokuapp.com/read").then((response) => {
+    Axios.get("https://final-blogs-harsha.herokuapp.com/read").then((response) => {
       setListOfBlogs(response.data);
     }).catch(() => {
       console.log("doesn't work");
