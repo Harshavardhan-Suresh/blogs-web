@@ -11,7 +11,7 @@ function App() {
   const [id, setId] = useState("");
   const [listofblogs, setListOfBlogs] = useState([]);
   const [status, setStatus] = useState("all");
-  
+  const [link, setLink] = useState("https://final-blogs-harsha.herokuapp.com/");
   const params = useParams();
   const create = () => {
     setStatus("add");
@@ -19,7 +19,7 @@ function App() {
 
   const addBlog = () => {
     if (title !== "" && content !== "" && description !== "") {
-      Axios.post("https://final-blogs-harsha.herokuapp.com/addBlog", {
+      Axios.post(`${link}/addBlog`, {
         title: title,
         description: description,
         content : content  
@@ -42,7 +42,7 @@ function App() {
   };
 
   const edit = (id) => {
-    for (let val of listofblogs) {
+    for (let val of listofblogs) {  
       if (val._id === id) {
         setContent(val.content);
         setDescription(val.description);
@@ -54,7 +54,7 @@ function App() {
   };
 
   const del = (id) => {
-    Axios.delete(`https://final-blogs-harsha.herokuapp.com/delete/${id}`).then(() => {
+    Axios.delete(`${link}/delete/${id}`).then(() => {
       setListOfBlogs(listofblogs.filter((val) => {
         return val._id !== id;
       }))
@@ -69,22 +69,24 @@ function App() {
     console.log(description);
     console.log(content);
     
-    Axios.delete(`https://final-blogs-harsha.herokuapp.com/delete/${id}`);
-    Axios.put(`https://final-blogs-harsha.herokuapp.com/put`, {
-      id: id,
-      title: title,
-      description: description,
-      content : content  
-    }).then((res) => {
-      console.log(res);
-      Axios.get("https://final-blogs-harsha.herokuapp.com/read").then((response) => {
-        setListOfBlogs(response.data);
-      }).catch(() => {
-        console.log("doesn't work");
-      });
-    }).catch((err) =>{
-      console.log(err);
-    });
+    Axios.delete(`${link}/delete/${id}`).then(
+      Axios.put(`${link}/put`, {
+        id: id,
+        title: title,
+        description: description,
+        content : content  
+      }).then((res) => {
+        console.log(res);
+        Axios.get(`${link}/read`).then((response) => {
+          setListOfBlogs(response.data);
+        }).catch(() => {
+          console.log("doesn't work");
+        });
+      }).catch((err) =>{
+        console.log(err);
+      })  
+    );
+    
     setStatus("all");
   };
 
@@ -92,7 +94,7 @@ function App() {
 
   useEffect(() => {
     console.log("fetching data");
-    Axios.get("https://final-blogs-harsha.herokuapp.com/read").then((response) => {
+    Axios.get(`${link}/read`).then((response) => {
       setListOfBlogs(response.data);
     }).catch(() => {
       console.log("doesn't work");
