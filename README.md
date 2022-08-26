@@ -1,2 +1,2 @@
 # Blogging Website
-link to my website: https://eloquent-flan-a1777e.netlify.app/
+link to my website: https://tangerine-squirrel-d7128e.netlify.app/
